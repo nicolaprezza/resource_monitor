@@ -7,10 +7,11 @@
 #
 # You can execute and monitor a process with
 # 
-# your_program <args> & monitor.sh $!
+# your_program <args> & monitor.sh $! output
 #
 
 pid=$1
+out=$2
 
 rss_min=`ps -p $pid -o rss | tail -n 1`
 rss_max=0
@@ -21,10 +22,14 @@ while kill -0 $pid 2> /dev/null; do
 
 	rss=`ps -p $pid -o rss | tail -n 1`
 
+	echo $rss >> $out
+
 	if ((rss > rss_max)) 
 	then
 		rss_max=$rss
 	fi
+
+	sleep .2
     
 done
 
